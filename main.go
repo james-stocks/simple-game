@@ -1,6 +1,7 @@
 package main
 
 import (
+    "fmt"
     "image"
 	"os"
     "time"
@@ -9,6 +10,9 @@ import (
 
     "github.com/faiface/pixel"
 	"github.com/faiface/pixel/pixelgl"
+	"github.com/faiface/pixel/text"
+	
+	"golang.org/x/image/font/basicfont"
 )
 
 func loadPicture(path string) (pixel.Picture, error) {
@@ -42,12 +46,18 @@ func run() {
 		panic(err)
 	}
 
+    basicAtlas := text.NewAtlas(basicfont.Face7x13, text.ASCII)
+	titleInfoTxt := text.New(pixel.V(800,50), basicAtlas)
+	fmt.Fprintln(titleInfoTxt, "Created by James Stocks")
+
     fps60 := time.Tick(time.Second / 60)
 
 	for !win.Closed() {
 	    win.Clear(pixel.RGB(0, 0, 0))
 		
 		backgroundTitleSprite.Draw(win, pixel.IM.Moved(win.Bounds().Center()))
+		
+		titleInfoTxt.Draw(win, pixel.IM)
 		
 		win.Update()
 
