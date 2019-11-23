@@ -13,6 +13,8 @@ import (
 	"github.com/faiface/pixel/text"
 	
 	"golang.org/x/image/font/basicfont"
+	
+	"github.com/james-stocks/simple-game/player"
 )
 
 func loadPicture(path string) (pixel.Picture, error) {
@@ -76,7 +78,11 @@ func run() {
 	titlePromptTxt := text.New(pixel.V(400,300), basicAtlas)
 	fmt.Fprintln(titlePromptTxt, "Press Enter to start your adventure")
 
+    playerLevelTxt := text.New(pixel.V(20, 700), basicAtlas)
+
     fps60 := time.Tick(time.Second / 60)
+
+    player := player.Player{ 1, 0 }
 
 	for !win.Closed() {
 	    // Update the game
@@ -85,6 +91,9 @@ func run() {
 			if win.JustPressed(pixelgl.KeyEnter) {
 		        gameState = GameStatePlaying
 		    }
+		case GameStatePlaying:
+		    playerLevelTxt.Clear()
+			fmt.Fprintln(playerLevelTxt, "Player level:", player.Level)
 		}
 		
 	    // Draw the screen
@@ -100,6 +109,8 @@ func run() {
 			case GameScreenVillage:
 			    backgroundVillageSprite.Draw(win, pixel.IM.Moved(win.Bounds().Center()))
 			}
+			// Draw UI common to all screens
+			playerLevelTxt.Draw(win, pixel.IM)
 		}
 		
 		win.Update()
