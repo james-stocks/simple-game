@@ -103,6 +103,7 @@ func run() {
 	player := player.Player{1, 0}
 	isInQuest := false
 	questStepsRemaining := 0
+	questExp := 100
 
 	for !win.Closed() {
 		// Update the game
@@ -120,6 +121,7 @@ func run() {
 					gameScreen = GameScreenForest
 					isInQuest = true
 					questStepsRemaining = 5
+					questStepsRemainingTxt.Clear()
 					fmt.Fprintln(questStepsRemainingTxt, "Quest steps remaining:", questStepsRemaining)
 				}
 			case GameScreenForest:
@@ -130,6 +132,8 @@ func run() {
 						fmt.Fprintln(questStepsRemainingTxt, "Quest steps remaining:", questStepsRemaining)
 					} else {
 						gameScreen = GameScreenVillage
+						player.AddExp(questExp)
+						isInQuest = false
 					}
 				}
 			}
