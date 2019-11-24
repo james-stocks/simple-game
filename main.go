@@ -6,6 +6,7 @@ import (
 	"os"
 	"time"
 
+	"image/color"
 	_ "image/png"
 
 	"github.com/faiface/pixel"
@@ -67,6 +68,12 @@ func run() {
 		panic(err)
 	}
 	backgroundForestSprite := pixel.NewSprite(backgroundForestPic, backgroundForestPic.Bounds())
+
+	blackPicturePic, err := loadPicture("assets/sprites/black64x64.png")
+	if err != nil {
+		panic(err)
+	}
+	blackSprite := pixel.NewSprite(blackPicturePic, blackPicturePic.Bounds())
 
 	cfg := pixelgl.WindowConfig{
 		Title:  "Adventure Game",
@@ -145,10 +152,11 @@ func run() {
 				backgroundForestSprite.Draw(win, pixel.IM.Moved(win.Bounds().Center()))
 			}
 			// Draw UI common to all screens
-			playerLevelTxt.Draw(win, pixel.IM)
 			if isInQuest == true {
+				blackSprite.DrawColorMask(win, pixel.IM.ScaledXY(blackSprite.Picture().Bounds().Center(), pixel.V(18, 2)).Moved(pixel.V(1000, 738)), color.RGBA{255, 255, 255, 180})
 				questStepsRemainingTxt.Draw(win, pixel.IM)
 			}
+			playerLevelTxt.Draw(win, pixel.IM)
 		}
 
 		win.Update()
