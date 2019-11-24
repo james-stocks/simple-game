@@ -26,8 +26,8 @@ jobs:
 
     - name: Install dependencies
       run: |
-        apt-get -y install libgl1-mesa-dev
-        apt-get -y install xorg-dev
+        sudo apt-get -y install libgl1-mesa-dev
+        sudo apt-get -y install xorg-dev
 
     - name: Build
       run: go build -v .
